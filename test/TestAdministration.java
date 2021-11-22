@@ -17,14 +17,19 @@ public class TestAdministration {
     @Test
     public void testGetCountriesForBookID(){
 
-        Country[] countries1 = Administration.getCountriesForBookID(204);
-        Arrays.sort(countries1, Comparator.comparingInt(Country::getID));
-        Country[] countriesTest1 = new Country[1];
-        countriesTest1[0] = new Country(246,"YT");
-        boolean match1;
-        if (Arrays.equals(countries1, countriesTest1)) match1 = true;
-        else match1 = false;
-        Assertions.assertTrue(match1);
+        Country[] countries = Administration.getCountriesForBookID(204);
+        Arrays.sort(countries, Comparator.comparingInt(Country::getID));
+        Country[] countriesTest = new Country[1];
+        countriesTest[0] = new Country(246,"YT");
+        Assertions.assertTrue(countries.length == countriesTest.length);
+        //Assertions.assertTrue(match);
+
+    }
+    @Test
+    public void testGetCountriesForBookIDNull(){
+
+        Country[] countries = Administration.getCountriesForBookID(200);
+        Assertions.assertTrue(countries == null);
 
     }
     @Test

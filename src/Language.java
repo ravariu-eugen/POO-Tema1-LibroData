@@ -39,7 +39,12 @@ public class Language {
     public void setName(String name) {
         this.name = name;
     }
-
+    /**
+     *  Citeste datele dintr-un fiser si intoarce un map ce contine
+     *  datele din acesta
+     * @param path calea la un fisier de format "Id###Code###Translation"
+     * @return un Map de forma (languageID, language)
+     */
     public static Map<Integer, Language> getLanguageMap(String path) {
         File input = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(input)))

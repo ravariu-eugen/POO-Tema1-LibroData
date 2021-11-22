@@ -3,6 +3,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Country {
     private int ID;
@@ -30,20 +32,25 @@ public class Country {
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
-
-    public static Country[] getCountryArray(String path) {
+    /**
+     *  Citeste datele dintr-un fiser si intoarce un map ce contine
+     *  datele din acesta
+     * @param path calea la un fisier de format "ID###CountryCode"
+     * @return un Map de forma (countryID, country)
+     */
+    public static Map<Integer, Country> getCountryArray(String path) {
         File input = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(input)))
         {
             String line;
             line = br.readLine();
             if (line.equals("ID###CountryCode")) {
-                ArrayList<Country> countries = new ArrayList<Country>();
+                Map<Integer, Country> countries = new TreeMap<>();
                 while ((line = br.readLine()) != null) {
                     String[] token = line.split("###");
-                    countries.add(new Country(Integer.parseInt(token[0]), token[1]));
+                    countries.put(Integer.parseInt(token[0]), new Country(Integer.parseInt(token[0]), token[1]));
                 }
-                return countries.toArray(new Country[0]);
+                return countries;
             } else {
                 return null;
             }

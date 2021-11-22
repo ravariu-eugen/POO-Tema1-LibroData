@@ -6,13 +6,14 @@ import java.util.*;
 
 public class Administration {
 
-    private static Country[] countries;
+    private static Map<Integer, Country> countries;
     private static Map<Integer, Language> languages;
     private static Map<Integer, Author> authors;
     private static Map<Integer, Book> books;
     private static Map<Integer, EditorialGroup> editorialGroups;
     private static Map<Integer, PublishingBrand> publishingBrands;
     private static Map<Integer, PublishingRetailer> publishingRetailers;
+    // am ales sa stochez datele intr-un map intrucat valorile ID-urilor pot sa nu fie consecutive
 
     public static ArrayList<Book> getBooksForPublishingID(int publishingRetailerID){
         ArrayList<Book> books = new ArrayList<>();
@@ -262,7 +263,7 @@ public class Administration {
                     int publishingRetailerID = Integer.parseInt(token[0]);
                     int countryID = Integer.parseInt(token[1]);
                     PublishingRetailer publishingRetailer = publishingRetailers.get(publishingRetailerID);
-                    publishingRetailer.addCountry(countries[countryID - 1]);
+                    publishingRetailer.addCountry(countries.get(countryID));
                 }
 
             }
@@ -318,7 +319,7 @@ public class Administration {
         Language[] temp = getLanguagesForPublishingRetailerID(3);
         for (Language x:temp){
             System.out.println(x.toString());
-        }
+        }*/
         for(int i = 0; i < 1000; i++){
             Country[] countries1 = getCountriesForBookID(i);
             if(countries1 != null){
@@ -327,7 +328,7 @@ public class Administration {
                     System.out.println(x.toString());
                 }
             }
-        }
+        }/*
         for(Map.Entry<Integer, PublishingRetailer> x: publishingRetailers.entrySet()){
             for(Map.Entry<Integer, PublishingRetailer> y: publishingRetailers.entrySet()){
                 if(!x.equals(y)){

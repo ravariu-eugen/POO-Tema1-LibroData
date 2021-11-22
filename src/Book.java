@@ -104,7 +104,7 @@ public class Book implements IPublishingArtifact{
             public String toString() {
 
                 Date date = this.getTime();
-                SimpleDateFormat ft = new SimpleDateFormat("dd.MM.YYYY hh:mm:ss");
+                SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
                 return ft.format(date);
             }
         };
@@ -118,14 +118,22 @@ public class Book implements IPublishingArtifact{
     public ArrayList<Author> getAuthors() {
         return authors;
     }
-
+    /**
+     *  Citeste datele dintr-un fiser si intoarce un map ce contine
+     *  datele din acesta
+     * @param path calea la un fisier de format
+     * "ID###Name###Subtitle###ISBN###PageCount###Keywords###LanguageId###CreatedOn"
+     * @return un Map de forma (bookID, book)
+     */
     public static Map<Integer, Book> getBookMap(String path) {
+
         File input = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(input)))
         {
             String line;
             line = br.readLine();
             if (line.equals("ID###Name###Subtitle###ISBN###PageCount###Keywords###LanguageId###CreatedOn")) {
+                // verificare format
                 Map<Integer, Book> books = new TreeMap<Integer, Book>();
                 while ((line = br.readLine()) != null) {
                     String[] token = line.split("###");

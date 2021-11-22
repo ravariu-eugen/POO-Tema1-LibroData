@@ -31,6 +31,14 @@ public class EditorialGroup implements IPublishingArtifact{
     public void addAuthor(Author author){
         books.addAll(author.getBooks());
     }
+
+    /**
+     *  Citeste datele dintr-un fiser si intoarce un map ce contine
+     *  datele din acesta
+     * @param path calea la un fisier de format "Id###Name"
+     * @return un Map de forma (editorialGroupID, editorialGroup)
+     */
+
     public static Map<Integer, EditorialGroup> getEditorialGroupMap(String path) {
         File input = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(input)))
@@ -38,6 +46,7 @@ public class EditorialGroup implements IPublishingArtifact{
             String line;
             line = br.readLine();
             if (line.equals("Id###Name")) {
+                // verificare format
                 Map<Integer, EditorialGroup> editorialGroupMap = new TreeMap<>();
                 while ((line = br.readLine()) != null) {
                     String[] token = line.split("###");

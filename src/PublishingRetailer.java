@@ -37,10 +37,17 @@ public class PublishingRetailer {
     public void addPublishingArtifact(IPublishingArtifact artifact){
         this.publishingArtifacts.add(artifact);
     }
+
     public void addCountry(Country country){
         this.countries.add(country);
     }
 
+    /**
+     *  Citeste datele dintr-un fiser si intoarce un map ce contine
+     *  datele din acesta
+     * @param path calea la un fisier de format "Id###Name"
+     * @return un Map de forma (publishingRetailerID, publishingRetailer)
+     */
     public static Map<Integer, PublishingRetailer> getPublishingRetailerMap(String path) {
         File input = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(input)))

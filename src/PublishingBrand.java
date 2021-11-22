@@ -26,9 +26,17 @@ public class PublishingBrand implements IPublishingArtifact{
     public void addBook(Book book){
         books.add(book);
     }
+
     public void addAuthor(Author author){
         books.addAll(author.getBooks());
     }
+
+    /**
+     *  Citeste datele dintr-un fiser si intoarce un map ce contine
+     *  datele din acesta
+     * @param path calea la un fisier de format "Id###Name"
+     * @return un Map de forma (publishingBrandID, publishingBrand)
+     */
     public static Map<Integer, PublishingBrand> getPublishingBrandMap(String path) {
         File input = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(input)))

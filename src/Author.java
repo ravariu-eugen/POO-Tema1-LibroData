@@ -11,6 +11,8 @@ public class Author {
     private final String firstName;
     private final String lastName;
     private final ArrayList<Book> books = new ArrayList<>();
+    // am adaugat o lista de carti in campurile clasei pentru a face
+    // anumite operatii mai simple
 
     public Author(int ID, String firstName, String lastName) {
         this.ID = ID;
@@ -41,7 +43,13 @@ public class Author {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
-
+    /**
+     *  Citeste datele dintr-un fiser si intoarce un map ce contine
+     *  datele din acesta
+     * @param path calea la un fisier de format
+     * "Id###FirstName###LastName"
+     * @return un Map de forma (bookID, book)
+     */
     public static Map<Integer, Author> getAuthorMap(String path) {
         File input = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(input)))
@@ -49,6 +57,7 @@ public class Author {
             String line;
             line = br.readLine();
             if (line.equals("Id###FirstName###LastName")) {
+                // verificare format
                 Map<Integer, Author> authors = new TreeMap<>();
                 while ((line = br.readLine()) != null) {
                     String[] token = line.split("###");
