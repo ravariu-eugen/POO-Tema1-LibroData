@@ -60,7 +60,9 @@ public class Administration {
                 countries.addAll(publishingRetailer.getCountries());
             }
         }
-        return countries.toArray(new Country[0]);
+        Country[] countries1 = countries.toArray(new Country[0]);
+        Arrays.sort(countries1, Comparator.comparingInt(Country::getID));
+        return countries1;
     }
     public static ArrayList<Book> getCommonBooksForRetailerIDs(int retailerID1, int retailerID2){
 
@@ -295,10 +297,12 @@ public class Administration {
         for(Map.Entry<Integer, PublishingRetailer> x: publishingRetailers.entrySet()){
             System.out.println(x.getValue().toString());
             ArrayList<Book> books = getBooksForPublishingID(x.getValue().getID());
-            for(Book book:books){
-                System.out.println(book.getID() + " " + book.getName());
-            }
+            System.out.println(books.size());
+            //for(Book book:books){
+            //    System.out.println(book.getID() + " " + book.getName());
+            //}
         }
+
         ArrayList<Book> books = getBooksForPublishingID(16);
         System.out.println("<<<<1>>>>");
         if (books != null) {
@@ -315,10 +319,14 @@ public class Administration {
         System.out.println("<<<<1&2>>>>");
         for(Book book:commonBooks){
             System.out.println(book.getID() + " " + book.getName());
-        }
-        Language[] temp = getLanguagesForPublishingRetailerID(3);
-        for (Language x:temp){
-            System.out.println(x.toString());
+        }for (int i = 0; i < 50; i++) {
+            System.out.println(i);
+            Language[] temp = getLanguagesForPublishingRetailerID(i);
+            if (temp != null) {
+                for (Language x : temp) {
+                    System.out.println(x.toString());
+                }
+            }
         }*/
         for(int i = 0; i < 1000; i++){
             Country[] countries1 = getCountriesForBookID(i);
