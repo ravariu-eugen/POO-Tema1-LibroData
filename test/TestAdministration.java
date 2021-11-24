@@ -1,16 +1,10 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+
 
 public class TestAdministration {
     static { Administration.initAdministration();}
-    @Test
-    public void testGetBooksForPublishingID1(){
-
-    }
     @Test
     public void testGetBooksForPublishingIDNull(){
         ArrayList<Book> books = Administration.getBooksForPublishingID(15);
@@ -109,17 +103,45 @@ public class TestAdministration {
 
     }
     @Test
-    public void testGetCommonBooksForRetailerIDs1(){
-
-    }
-    @Test
     public void testGetCommonBooksForRetailerIDsNull(){
         ArrayList<Book> books = Administration.getCommonBooksForRetailerIDs(3, 18);
         Assertions.assertNull(books);
     }
     @Test
-    public void testGetAllBooksForRetailerIDs1(){
-
+    public void testGetCommonBooksForRetailerIDs1(){
+        ArrayList<Book> books = Administration.getCommonBooksForRetailerIDs(10, 27);
+        int[] booksIDs = new int[books.size()];
+        for(int i = 0; i < books.size(); i++)
+            booksIDs[i] = books.get(i).getID();
+        int[] bookIDsTest = {};
+        Assertions.assertArrayEquals(bookIDsTest, booksIDs);
+    }
+    @Test
+    public void testGetCommonBooksForRetailerIDs2(){
+        ArrayList<Book> books = Administration.getCommonBooksForRetailerIDs(20, 32);
+        int[] booksIDs = new int[books.size()];
+        for(int i = 0; i < books.size(); i++)
+            booksIDs[i] = books.get(i).getID();
+        int[] bookIDsTest = {9168};
+        Assertions.assertArrayEquals(bookIDsTest, booksIDs);
+    }
+    @Test
+    public void testGetCommonBooksForRetailerIDs3(){
+        ArrayList<Book> books = Administration.getCommonBooksForRetailerIDs(28, 30);
+        int[] booksIDs = new int[books.size()];
+        for(int i = 0; i < books.size(); i++)
+            booksIDs[i] = books.get(i).getID();
+        int[] bookIDsTest = {10633, 13984};
+        Assertions.assertArrayEquals(bookIDsTest, booksIDs);
+    }
+    @Test
+    public void testGetCommonBooksForRetailerIDs4(){
+        ArrayList<Book> books = Administration.getCommonBooksForRetailerIDs(22, 26);
+        int[] booksIDs = new int[books.size()];
+        for(int i = 0; i < books.size(); i++)
+            booksIDs[i] = books.get(i).getID();
+        int[] bookIDsTest = {5391, 9661, 14653};
+        Assertions.assertArrayEquals(bookIDsTest, booksIDs);
     }
     @Test
     public void testGetAllBooksForRetailerIDsNull(){

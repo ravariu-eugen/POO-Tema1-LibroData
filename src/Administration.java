@@ -13,13 +13,18 @@ public class Administration {
     private static Map<Integer, EditorialGroup> editorialGroups;
     private static Map<Integer, PublishingBrand> publishingBrands;
     private static Map<Integer, PublishingRetailer> publishingRetailers;
-    // am ales sa stochez datele intr-un map intrucat valorile ID-urilor pot sa nu fie consecutive
 
+    /**Cărțile publicate de către un retailer
+     * @param publishingRetailerID
+     * @return o listă de cărți
+     */
     public static ArrayList<Book> getBooksForPublishingID(int publishingRetailerID){
         ArrayList<Book> books = new ArrayList<>();
         PublishingRetailer publishingRetailer = publishingRetailers.get(publishingRetailerID);
         if(publishingRetailer == null)
             return null;
+        // adaug in books cartile din fiecare publishingArtifact
+        // pentru Book adauga cartea in sine
         for(IPublishingArtifact artifact: publishingRetailer.getPublishingArtifacts()){
             if(artifact instanceof Book){
                 books.add((Book) artifact);
@@ -32,11 +37,17 @@ public class Administration {
         books.sort(Comparator.comparingInt(Book::getID));
         return books;
     }
+
+    /** Limbile în care sunt publicate cărțile unui retailer
+     * @param publishingRetailerID
+     * @return o listă de limbi
+     */
     public static Language[] getLanguagesForPublishingRetailerID(int publishingRetailerID){
         ArrayList<Language> languages = new ArrayList<>();
         ArrayList<Book> books = getBooksForPublishingID(publishingRetailerID);
         if (books == null)
             return null;
+        // pentru fiecare carte adaug limba ei daca nu a aparut inca in languages
         for(Book book:books) {
             int languageId = book.getLanguageId();
             Language language = Administration.languages.get(languageId);
@@ -47,12 +58,20 @@ public class Administration {
         languages.sort(Comparator.comparingInt(Language::getID));
         return languages.toArray(new Language[0]);
     }
+
+    /** Țările în care o carte a ajuns
+     * @param bookID
+     * @return o listă de țări
+     */
     public static Country[] getCountriesForBookID(int bookID){
 
         Book book = books.get(bookID);
         if(book == null)
             return null;
         Set<Country> countries = new HashSet<>();
+        // pentru fiecare publishingRetailer verificam daca carte apartine lui
+        // daca da, adaugam lista lui de carti intr-un set
+        // (pentru a elimina duplicatele)
         for(Map.Entry<Integer, PublishingRetailer> entry: publishingRetailers.entrySet()) {
             PublishingRetailer publishingRetailer = entry.getValue();
             ArrayList<Book> publishingRetailerBooks = getBooksForPublishingID(publishingRetailer.getID());
@@ -64,6 +83,12 @@ public class Administration {
         Arrays.sort(countries1, Comparator.comparingInt(Country::getID));
         return countries1;
     }
+
+    /** Cărți comune între retaileri
+     * @param retailerID1
+     * @param retailerID2
+     * @return o listă de cărți comune
+     */
     public static ArrayList<Book> getCommonBooksForRetailerIDs(int retailerID1, int retailerID2){
 
         ArrayList<Book> books1 = getBooksForPublishingID(retailerID1);
@@ -74,6 +99,7 @@ public class Administration {
             return null;
         ArrayList<Book> commonBooks = new ArrayList<>();
         int iter1=0, iter2=0;
+        // imbinarea celor 2 liste prin interclasare
         while (iter1 < books1.size() && iter2< books2.size()){
             int bookID1 = books1.get(iter1).getID();
             int bookID2 = books2.get(iter2).getID();
@@ -90,6 +116,12 @@ public class Administration {
 
         return commonBooks;
     }
+
+    /** Cărți ale retailerilor (union)
+     * @param retailerID1
+     * @param retailerID2
+     * @return o listă de cărți între retaileri (uniunea celor două liste)
+     */
     public static ArrayList<Book> getAllBooksForRetailerIDs (int retailerID1, int retailerID2){
 
         ArrayList<Book> books1 = getBooksForPublishingID(retailerID1);
@@ -100,6 +132,7 @@ public class Administration {
             return null;
         ArrayList<Book> allBooks = new ArrayList<>();
         int iter1=0, iter2=0;
+        // imbinarea celor 2 liste prin interclasare
         while (iter1 < books1.size() && iter2< books2.size()){
             int bookID1 = books1.get(iter1).getID();
             int bookID2 = books2.get(iter2).getID();
@@ -119,13 +152,16 @@ public class Administration {
             allBooks.add(books1.get(iter1));
             iter1++;
         }
-        while (iter2 < books1.size()){
-            allBooks.add(books2.get(iter1));
-            iter1++;
+        while (iter2 < books2.size()){
+            allBooks.add(books2.get(iter2));
+            iter2++;
         }
         return allBooks;
     }
 
+
+    // metode care realizeaza conexiunea intre cate doua Map-uri
+    // din Administration pe baza unui fisier text
     public static void connectBooksToAuthors (String path){
         File input = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(input)))
@@ -273,6 +309,10 @@ public class Administration {
             e.printStackTrace();
         }
     }
+
+    /**
+     * initializeaza Map-urile si conexiunile dintre obiectele continute
+     */
     public static void initAdministration(){
         String init = "./init/";
         countries = Country.getCountryArray(init + "countries.in");
@@ -327,7 +367,7 @@ public class Administration {
                     System.out.println(x.toString());
                 }
             }
-        }*/
+        }
         for(int i = 0; i < 1000; i++){
             Country[] countries1 = getCountriesForBookID(i);
             if(countries1 != null){
@@ -336,20 +376,21 @@ public class Administration {
                     System.out.println(x.toString());
                 }
             }
-        }/*
+        }
+
         for(Map.Entry<Integer, PublishingRetailer> x: publishingRetailers.entrySet()){
             for(Map.Entry<Integer, PublishingRetailer> y: publishingRetailers.entrySet()){
                 if(!x.equals(y)){
-                    System.out.println("| " + x.getValue().getName() + " & " + y.getValue().getName() + " |");
-                    books = getCommonBooksForRetailerIDs(x.getValue().getID(), y.getValue().getID());
+                    System.out.println("| " + x.getValue().getID() + " & " + y.getValue().getID() + " |");
+                    ArrayList<Book> books = getCommonBooksForRetailerIDs(x.getValue().getID(), y.getValue().getID());
                     for(Book book:books){
 
                         System.out.println(book.getID() + " " + book.getName());
                     }
                 }
             }
-        }
-        */
+        }*/
+
 
     }
 }
