@@ -183,18 +183,17 @@ public class Book implements IPublishingArtifact{
 
     @Override
     public String Publish()  {
-
-        String output = "<xml>\n";
-        output += ("    <title>" + this.name + "</title>\n");
-        output += ("    <subtitle>" + this.subtitle + "</subtitle>\n");
-        output += ("    <isbn>" + this.ISBN + "</isbn>\n");
-        output += ("    <pageCount>" + this.pageCount + "</pageCount>\n");
-        output += ("    <keywords>" + this.keywords + "</keywords>\n");
-        output += ("    <languageID>" + this.languageId + "</languageID>\n");
-        output += ("    <createdOn>" + this.createdOn.toString() + "</createdOn>\n");
-        output += ("    <authors>" + this.authors + "</authors>\n");
-        output += ("</xml>");
-        return output;
+        StringBuffer out = new StringBuffer("<xml>\n");
+        out.append("    <title>").      append(this.name).      append("</title>\n");
+        out.append("    <subtitle>").   append(this.subtitle).  append("</subtitle>\n");
+        out.append("    <isbn>").       append(this.ISBN).      append("</isbn>\n");
+        out.append("    <pageCount>").  append(this.pageCount). append("</pageCount>\n");
+        out.append("    <keywords>").   append(this.keywords).  append("</keywords>\n");
+        out.append("    <languageID>"). append(this.languageId).append("</languageID>\n");
+        out.append("    <createdOn>").  append(this.createdOn.toString()).append("</createdOn>\n");
+        out.append("    <authors>").    append(this.authors).   append("</authors>\n");
+        out.append("</xml>");
+        return out.toString();
     }
 
 

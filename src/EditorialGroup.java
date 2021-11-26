@@ -72,26 +72,27 @@ public class EditorialGroup implements IPublishingArtifact{
 
     @Override
     public String Publish() {
-        String output = "<xml>\n";
-        output += ("    <editorialGroup>\n");
-        output += ("        <ID>" + this.ID + "</ID>\n");
-        output += ("        <name>" + this.name + "</name>\n");
-        output += ("    </editorialGroup>\n");
-        output += ("    <books>\n");
+        StringBuffer out = new StringBuffer("<xml>\n");
+        
+        out.append ("    <editorialGroup>\n");
+        out.append("        <ID>").append(this.ID).append("</ID>\n");
+        out.append("        <name>").append(this.name).append("</name>\n");
+        out.append ("    </editorialGroup>\n");
+        out.append ("    <books>\n");
         for(Book book:this.books) {
-            output += "        <book>\n";
-            output += ("            <title>" + book.getName() + "</title>\n");
-            output += ("            <subtitle>" + book.getSubtitle() + "</subtitle>\n");
-            output += ("            <isbn>" + book.getISBN() + "</isbn>\n");
-            output += ("            <pageCount>" + book.getPageCount() + "</pageCount>\n");
-            output += ("            <keywords>" + book.getKeywords() + "</keywords>\n");
-            output += ("            <languageID>" + book.getLanguageId() + "</languageID>\n");
-            output += ("            <createdOn>" + book.getCreatedOn().toString() + "</createdOn>\n");
-            output += ("            <authors>" + book.getAuthors().toString() + "</authors>\n");
-            output += ("        </book>\n");
+            out.append ("        <book>\n");
+            out.append("            <title>").append(book.getName()).append("</title>\n");
+            out.append("            <subtitle>").append(book.getSubtitle()).append("</subtitle>\n");
+            out.append("            <isbn>").append(book.getISBN()).append("</isbn>\n");
+            out.append("            <pageCount>").append(book.getPageCount()).append("</pageCount>\n");
+            out.append("            <keywords>").append(book.getKeywords()).append("</keywords>\n");
+            out.append("            <languageID>").append(book.getLanguageId()).append("</languageID>\n");
+            out.append("            <createdOn>").append(book.getCreatedOn().toString()).append("</createdOn>\n");
+            out.append("            <authors>").append(book.getAuthors().toString()).append("</authors>\n");
+            out.append ("        </book>\n");
         }
-        output += ("    </books>\n");
-        output += ("</xml>\n");
-        return output;
+        out.append ("    </books>\n");
+        out.append ("</xml>\n");
+        return out.toString();
     }
 }
